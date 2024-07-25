@@ -1,5 +1,5 @@
 from time import strftime
-from src.entity.config_entity import DataIngestionConfig,TrainingPipelineConfig
+from src.entity.config_entity import DataIngestionConfig,TrainingPipelineConfig,DataValidationConfig
 from src.constant.training_pipeline_config import *
 from src.constant import TIMESTAMP
 from src.logger import logger
@@ -90,3 +90,26 @@ class FinanceConfig:
         )
         logger.info(f"Data ingestion config: {data_ingestion_config}")
         return data_ingestion_config
+    
+    def get_data_validation_config(self) -> DataValidationConfig:
+        """
+
+        """
+        try:
+            data_validation_dir = os.path.join(self.pipeline_config.artifact_dir,
+                                               DATA_VALIDATION_DIR, self.timestamp)
+
+            accepted_data_dir = os.path.join(data_validation_dir, DATA_VALIDATION_ACCEPTED_DATA_DIR)
+            rejected_data_dir = os.path.join(data_validation_dir, DATA_VALIDATION_REJECTED_DATA_DIR)
+
+            data_preprocessing_config = DataValidationConfig(
+                accepted_data_dir=accepted_data_dir,
+                rejected_data_dir=rejected_data_dir,
+                file_name=DATA_VALIDATION_FILE_NAME
+            )
+
+            logger.info(f"Data preprocessing config: {data_preprocessing_config}")
+
+            return data_preprocessing_config
+        except Exception as e:
+            raise CustomException(e, sys)

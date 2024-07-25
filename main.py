@@ -17,9 +17,6 @@ def start_training(start=False):
         raise CustomException(e, sys)
 
 
-
-
-
 def main(training_status):
     try:
         start_training(start=training_status)
